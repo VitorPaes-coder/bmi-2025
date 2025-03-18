@@ -35,6 +35,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -47,17 +48,29 @@ import androidx.navigation.NavHostController
 import br.senai.sp.jandira.bmi.R
 
 @Composable
-fun UserDataScreen(modifier: Modifier = Modifier) {
+fun UserDataScreen(navController: NavHostController?) {
 
     var ageState = remember {
         mutableStateOf(value = "")
     }
+
     var weightState = remember {
         mutableStateOf(value = "")
     }
+
     var heightState = remember {
         mutableStateOf(value = "")
     }
+
+    var isErrorState = remember {
+        mutableStateOf(value = false)
+    }
+
+    var errorMessageState = remember {
+        mutableStateOf(value = "")
+    }
+
+    var context = LocalContext.current
 
     Box(
         modifier = Modifier
@@ -83,7 +96,7 @@ fun UserDataScreen(modifier: Modifier = Modifier) {
                 fontSize = 26.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
-                    .padding(16.dp, 65.dp, 0.dp, 0.dp)
+                    .padding(30.dp, 65.dp, 0.dp, 40.dp)
             )
 
             Card (
@@ -96,13 +109,14 @@ fun UserDataScreen(modifier: Modifier = Modifier) {
                 Column (
                     modifier = Modifier
                         .padding(32.dp)
-                        .weight(1f)
+                        .weight(1f),
+                    verticalArrangement = Arrangement.SpaceEvenly
+
                 ){
 
                     Row (
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 30.dp)
                     ){
 
                         Column (
@@ -208,8 +222,8 @@ fun UserDataScreen(modifier: Modifier = Modifier) {
 
                     Column (
                         modifier = Modifier
-                            .padding(0.dp, 10.dp),
-                        verticalArrangement = Arrangement.SpaceBetween
+                            .height(300.dp),
+                        verticalArrangement = Arrangement.SpaceEvenly
                     ){
 
                         OutlinedTextField(
@@ -229,6 +243,7 @@ fun UserDataScreen(modifier: Modifier = Modifier) {
                                 Icon(
                                     imageVector = Icons.Default.Numbers,
                                     contentDescription = "",
+                                    tint = Color(0xFF4CAF50)
                                 )
                             },
                             keyboardOptions = KeyboardOptions(
@@ -257,6 +272,7 @@ fun UserDataScreen(modifier: Modifier = Modifier) {
                                 Icon(
                                     imageVector = Icons.Default.Balance,
                                     contentDescription = "",
+                                    tint = Color(0xFF4CAF50)
                                 )
                             },
                             keyboardOptions = KeyboardOptions(
@@ -285,6 +301,7 @@ fun UserDataScreen(modifier: Modifier = Modifier) {
                                 Icon(
                                     imageVector = Icons.Default.Height,
                                     contentDescription = "",
+                                    tint = Color(0xFF4CAF50)
                                 )
                             },
                             keyboardOptions = KeyboardOptions(
@@ -294,14 +311,44 @@ fun UserDataScreen(modifier: Modifier = Modifier) {
                             colors = OutlinedTextFieldDefaults.colors(
                                 cursorColor = Color(0xFF4CAF50),
                                 unfocusedLabelColor = Color(0xFF4CAF50)
-                            )
+                            ),
+                            isError = isErrorState.value,
+                            supportingText = {
+                                Text(
+                                    text = errorMessageState.value,
+                                    color = Color.Red
+                                )
+                            }
                         )
 
 
                     }
 
                     Button(
-                        onClick = {},
+                        onClick = {
+                            var isValid = true
+
+                            if (ageState.value.isBlank()) {
+                                isErrorState.value = true
+                                errorMessageState.value = context.getString(R.string.support_age)
+                                isValid = false
+                            } else if (weightState.value.isBlank()) {
+                                isErrorState.value = true
+                                errorMessageState.value = context.getString(R.string.support_weight)
+                                isValid = false
+                            } else if (heightState.value.isBlank()) {
+                                isErrorState.value = true
+                                errorMessageState.value = context.getString(R.string.support_height)
+                                isValid = false
+                            } else {
+                                isErrorState.value = false
+                                errorMessageState.value = ""
+                            }
+
+                            if (isValid) {
+                                navController?.navigate("user_data")
+                            }
+                        },
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50)
                         ),
                         shape = RoundedCornerShape(12.dp),
@@ -326,5 +373,5 @@ fun UserDataScreen(modifier: Modifier = Modifier) {
 @Preview(showSystemUi = true)
 @Composable
 private fun UserDataScreenPreview() {
-    UserDataScreen()
+    UserDataScreen(null)
 }

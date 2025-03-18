@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AppBlocking
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
@@ -59,10 +60,10 @@ fun TelaInicial(navController: NavHostController?) {
         modifier = Modifier
             .fillMaxSize()
             .background(
-                brush = Brush.linearGradient(
+                brush = Brush.horizontalGradient(
                     listOf(
-                        Color(0xFF5608A4),
-                        Color(0xFFBA88FF)
+                        Color(0xFF8BC34A),
+                        Color(0xBE4CAF50)
                     )
                 )
             )
@@ -123,7 +124,7 @@ fun TelaInicial(navController: NavHostController?) {
                                 Icon(
                                     imageVector = Icons.Default.AppBlocking,
                                     contentDescription = "",
-                                    tint = Color(0xFF5608A4)
+                                    tint = Color(0xFF4CAF50)
                                 )
                             },
                             keyboardOptions = KeyboardOptions(
@@ -149,7 +150,8 @@ fun TelaInicial(navController: NavHostController?) {
                             }else {
                                 navController?.navigate("user_data")
                             }
-                        }
+                        },
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50))
                     ) {
                         Text(
                             text = stringResource(R.string.next)
