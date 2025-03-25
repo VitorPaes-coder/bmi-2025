@@ -16,7 +16,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
@@ -31,10 +30,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import br.senai.sp.jandira.bmi.R
 
 @Composable
-fun BMIResultScreen() {
+fun BMIResultScreen(navController: NavHostController?) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -113,13 +113,33 @@ fun BMIResultScreen() {
                             }
                         }
 
-                        Text(
-                            text = stringResource(R.string.bmi_class),
-                            fontSize = 22.sp,
-                            fontWeight = FontWeight.Medium,
-                            color = Color.Black,
+                        Row (
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.Center
+                        ){
+                            Text(
 
-                        )
+                                text = stringResource(R.string.bmi_class),
+                                fontSize = 22.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = Color.Black,
+                                )
+                            VerticalDivider(
+                                thickness = 2.dp,
+                                color = Color.Black,
+                                modifier = Modifier
+                                    .padding(5.dp)
+                                    .height(16.dp)
+                            )
+                            Text(
+                                text = "Obesity",
+                                fontSize = 22.sp,
+                                fontWeight = FontWeight.Medium,
+                                color = Color.Black,
+                            )
+                        }
+
 
                         Card (
                             modifier = Modifier
@@ -240,5 +260,5 @@ fun BMIResultScreen() {
 @Preview(showSystemUi = true)
 @Composable
 private fun BMIResultScreenPreview() {
-    BMIResultScreen()
+    BMIResultScreen(null)
 }

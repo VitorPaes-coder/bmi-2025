@@ -1,6 +1,7 @@
 package br.senai.sp.jandira.bmi.screens
 
 
+import android.content.Context
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -50,27 +51,34 @@ import br.senai.sp.jandira.bmi.R
 @Composable
 fun UserDataScreen(navController: NavHostController?) {
 
-    var ageState = remember {
+    val ageState = remember {
         mutableStateOf(value = "")
     }
 
-    var weightState = remember {
+    val weightState = remember {
         mutableStateOf(value = "")
     }
 
-    var heightState = remember {
+    val heightState = remember {
         mutableStateOf(value = "")
     }
 
-    var isErrorState = remember {
+    val isErrorState = remember {
         mutableStateOf(value = false)
     }
 
-    var errorMessageState = remember {
+    val errorMessageState = remember {
         mutableStateOf(value = "")
     }
 
-    var context = LocalContext.current
+    // Abrir o arquivo usuario.xml
+    // para recuperar o nome que o usuário digitou
+    // na tela anterior
+    val context = LocalContext.current
+    val sharedUserFile = context
+        .getSharedPreferences("usuario", Context.MODE_PRIVATE)
+
+    val userName = sharedUserFile.getString("user_name", "Name not found")
 
     Box(
         modifier = Modifier
@@ -92,7 +100,7 @@ fun UserDataScreen(navController: NavHostController?) {
         ){
 
             Text(
-                text = stringResource(R.string.hi_text),
+                text = stringResource(R.string.hi_text) + " ${userName}!" ,
                 fontSize = 26.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
@@ -346,7 +354,7 @@ fun UserDataScreen(navController: NavHostController?) {
                             }
 
                             if (isValid) {
-                                navController?.navigate("user_data")
+                                navController?.navigate("result_screen")
                             }
                         },
                         colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF4CAF50)
