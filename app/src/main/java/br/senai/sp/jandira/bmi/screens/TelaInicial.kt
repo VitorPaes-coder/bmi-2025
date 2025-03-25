@@ -64,7 +64,7 @@ fun TelaInicial(navController: NavHostController?) {
                 brush = Brush.horizontalGradient(
                     listOf(
                         Color(0xFF8BC34A),
-                        Color(0xBE4CAF50)
+                        Color(0xBE13A618)
                     )
                 )
             )

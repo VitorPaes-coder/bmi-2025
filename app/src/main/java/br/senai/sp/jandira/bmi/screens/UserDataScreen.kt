@@ -87,7 +87,7 @@ fun UserDataScreen(navController: NavHostController?) {
                 brush = Brush.horizontalGradient(
                     listOf(
                         Color(0xFF8BC34A),
-                        Color(0xBE4CAF50)
+                        Color(0xBE13A618)
                     )
                 )
             )
@@ -334,26 +334,30 @@ fun UserDataScreen(navController: NavHostController?) {
 
                     Button(
                         onClick = {
-                            var isValid = true
 
                             if (ageState.value.isBlank()) {
                                 isErrorState.value = true
                                 errorMessageState.value = context.getString(R.string.support_age)
-                                isValid = false
+
                             } else if (weightState.value.isBlank()) {
                                 isErrorState.value = true
                                 errorMessageState.value = context.getString(R.string.support_weight)
-                                isValid = false
+
                             } else if (heightState.value.isBlank()) {
                                 isErrorState.value = true
                                 errorMessageState.value = context.getString(R.string.support_height)
-                                isValid = false
-                            } else {
+
+                            } else{
                                 isErrorState.value = false
                                 errorMessageState.value = ""
-                            }
+                                navController?.navigate("result_screen")
 
-                            if (isValid) {
+                                val editor = sharedUserFile.edit()
+                                editor.putInt("user_age", ageState.value.trim().toInt())
+                                editor.putInt("user_height", heightState.value.trim().toInt())
+                                editor.putInt("user_weight", weightState.value.trim().toInt())
+                                editor.apply()
+
                                 navController?.navigate("result_screen")
                             }
                         },
