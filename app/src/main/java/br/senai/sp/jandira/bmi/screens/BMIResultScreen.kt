@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import br.senai.sp.jandira.bmi.R
+import br.senai.sp.jandira.bmi.calcs.bmiCalculator
 import br.senai.sp.jandira.bmi.model.BmiStatus
 import kotlinx.serialization.StringFormat
 import java.util.Locale
@@ -45,13 +46,20 @@ fun BMIResultScreen(navController: NavHostController?) {
     val sharedUserFile = context
         .getSharedPreferences("usuario", Context.MODE_PRIVATE)
 
-    val age= sharedUserFile.getInt("user_age", 0)
-    val weight= sharedUserFile.getInt("user_weight", 0)
-    var height= sharedUserFile.getInt("user_height", 0).toDouble()
+    val age= sharedUserFile.getInt(
+        "user_age",
+        0
+    )
+    val weight= sharedUserFile.getInt(
+        "user_weight",
+        0
+    )
+    val height= sharedUserFile.getInt(
+        "user_height",
+        0
+    ).toDouble()
 
-    height /= 100
-
-
+    val bmiResult = bmiCalculator(weight, height)
 
     Box(
         modifier = Modifier
@@ -123,7 +131,11 @@ fun BMIResultScreen(navController: NavHostController?) {
                             ) {
 
                                 Text(
-                                    text = "30,6",
+                                    text = String.format(
+                                        Locale.getDefault(),
+                                        "%.1f",
+                                        bmiResult.bmi.second
+                                    ),
                                     fontSize = 40.sp,
                                     color = Color.Black,
                                     fontWeight = FontWeight.Bold,
@@ -131,32 +143,12 @@ fun BMIResultScreen(navController: NavHostController?) {
                             }
                         }
 
-                        Row (
-                            modifier = Modifier
-                                .fillMaxWidth(),
-                            horizontalArrangement = Arrangement.Center
-                        ){
-                            Text(
-
-                                text = stringResource(R.string.bmi_class),
-                                fontSize = 22.sp,
-                                fontWeight = FontWeight.Medium,
-                                color = Color.Black,
-                                )
-                            VerticalDivider(
-                                thickness = 2.dp,
-                                color = Color.Black,
-                                modifier = Modifier
-                                    .padding(5.dp)
-                                    .height(16.dp)
+                        Text(
+                            text = bmiResult.bmi.first,
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = Color.Black,
                             )
-                            Text(
-                                text = "Obesity",
-                                fontSize = 22.sp,
-                                fontWeight = FontWeight.Medium,
-                                color = Color.Black,
-                            )
-                        }
 
 
                         Card (
@@ -228,7 +220,7 @@ fun BMIResultScreen(navController: NavHostController?) {
                                         text = String.format(
                                             Locale.getDefault(),
                                             "%.2f",
-                                            height
+                                            height.div(100)
                                         ),
                                         fontSize = 24.sp,
                                         fontWeight = FontWeight.Bold
