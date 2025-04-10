@@ -11,6 +11,7 @@
     <string name="if_female">Female</string>
     <string name="age">Age</string>
     <string name="weight">Weight</string>
+    <string name="height_cm">Height in cm</string>
     <string name="height">Height</string>
     <string name="calculate">Calculate</string>
     <string name="support_name">The name is required and it needs to be more than 2 words!</string>

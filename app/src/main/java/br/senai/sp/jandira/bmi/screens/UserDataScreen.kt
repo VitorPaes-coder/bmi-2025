@@ -63,11 +63,27 @@ fun UserDataScreen(navController: NavHostController?) {
         mutableStateOf(value = "")
     }
 
-    val isErrorState = remember {
+    val isErrorStateAge = remember {
         mutableStateOf(value = false)
     }
 
-    val errorMessageState = remember {
+    val isErrorStateWeight = remember {
+        mutableStateOf(value = false)
+    }
+
+    val isErrorStateHeight = remember {
+        mutableStateOf(value = false)
+    }
+
+    val errorMessageStateAge = remember {
+        mutableStateOf(value = "")
+    }
+
+    val errorMessageStateWeight = remember {
+        mutableStateOf(value = "")
+    }
+
+    val errorMessageStateHeight = remember {
         mutableStateOf(value = "")
     }
 
@@ -261,7 +277,14 @@ fun UserDataScreen(navController: NavHostController?) {
                             colors = OutlinedTextFieldDefaults.colors(
                                 cursorColor = Color(0xFF4CAF50),
                                 unfocusedLabelColor = Color(0xFF4CAF50)
-                            )
+                            ),
+                            isError = isErrorStateAge.value,
+                            supportingText = {
+                                Text(
+                                    text = errorMessageStateAge.value,
+                                    color = Color.Red
+                                )
+                            }
                         )
                         OutlinedTextField(
                             value = weightState.value,
@@ -290,7 +313,14 @@ fun UserDataScreen(navController: NavHostController?) {
                             colors = OutlinedTextFieldDefaults.colors(
                                 cursorColor = Color(0xFF4CAF50),
                                 unfocusedLabelColor = Color(0xFF4CAF50)
-                            )
+                            ),
+                            isError = isErrorStateWeight.value,
+                            supportingText = {
+                                Text(
+                                    text = errorMessageStateWeight.value,
+                                    color = Color.Red
+                                )
+                            }
                         )
                         OutlinedTextField(
                             value = heightState.value,
@@ -302,7 +332,7 @@ fun UserDataScreen(navController: NavHostController?) {
                             shape = RoundedCornerShape(16.dp),
                             label = {
                                 Text(
-                                    text = stringResource(R.string.height)
+                                    text = stringResource(R.string.height_cm)
                                 )
                             },
                             leadingIcon = {
@@ -320,10 +350,10 @@ fun UserDataScreen(navController: NavHostController?) {
                                 cursorColor = Color(0xFF4CAF50),
                                 unfocusedLabelColor = Color(0xFF4CAF50)
                             ),
-                            isError = isErrorState.value,
+                            isError = isErrorStateHeight.value,
                             supportingText = {
                                 Text(
-                                    text = errorMessageState.value,
+                                    text = errorMessageStateHeight.value,
                                     color = Color.Red
                                 )
                             }
@@ -335,21 +365,27 @@ fun UserDataScreen(navController: NavHostController?) {
                     Button(
                         onClick = {
 
-                            if (ageState.value.isBlank()) {
-                                isErrorState.value = true
-                                errorMessageState.value = context.getString(R.string.support_age)
+                            if (ageState.value.length == 0) {
+                                isErrorStateAge.value = true
+                                errorMessageStateAge.value = context.getString(R.string.support_age)
 
-                            } else if (weightState.value.isBlank()) {
-                                isErrorState.value = true
-                                errorMessageState.value = context.getString(R.string.support_weight)
+                            } else if (weightState.value.length == 0) {
+                                isErrorStateWeight.value = true
+                                errorMessageStateWeight.value = context.getString(R.string.support_weight)
 
-                            } else if (heightState.value.isBlank()) {
-                                isErrorState.value = true
-                                errorMessageState.value = context.getString(R.string.support_height)
+                            } else if (heightState.value.length == 0) {
+                                isErrorStateHeight.value = true
+                                errorMessageStateHeight.value = context.getString(R.string.support_height)
 
                             } else{
-                                isErrorState.value = false
-                                errorMessageState.value = ""
+                                isErrorStateAge.value = false
+                                isErrorStateWeight.value = false
+                                isErrorStateHeight.value = false
+
+                                errorMessageStateAge.value = ""
+                                errorMessageStateWeight.value = ""
+                                errorMessageStateHeight.value = ""
+
                                 navController?.navigate("result_screen")
 
                                 val editor = sharedUserFile.edit()
